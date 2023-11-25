@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* *{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+} */
+
+/* Links are styling for dashboard */
+.link-style {
+    background-color: none !important;
+    color: black;
+}
+
+.link-style:hover {
+    background-color: transparent;
+    color: black;
+}
+
+.link-style:focus {
+    background-color: transparent !important;
+    color: red !important;
+}
+
+/* Main Link */
+.link-style1 {
+    background-color: transparent !important;
+    color: black;
+}
+
+.link-style1:hover {
+    background-color: transparent !important;
+    color: black;
+}
+
+
+/*-- Overflow hidden is important to scroll -- */
+.table-overflow {
+    overflow: hidden !important;
+}
+
+
+
+/* Background ash */
+.dashbg {
+    background-color: #F7FAFC;
+}
+
+.sidebarbg {
+    background-color: #FFFFFF;
+}
+
+li:hover {
+    color: #008CFF !important;
+}
+
+li:hover {
+    background-color: #F2F9FF !important;
+}
+
+.ullist li {
+    color: black !important;
+}
+
+.ullist li:hover {
+    color: #008CFF !important;
+}
+
+.dropdwndetails:hover {
+    color: #008CFF !important;
+}
+
+
+
+.navbar {
+    background-color: #FFFFFF;
+    color: black;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.187);
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.139);
+}
+
+
+
+
+/* Print btn hidden */
+@media print {
+
+    .printbtn,
+    .action-td,
+    .action-th {
+        display: none;
+    }
+
+    .tablebody {
+        width: 1200px !important;
+    }
+}

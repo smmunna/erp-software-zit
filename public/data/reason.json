@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Advance"
+    },
+    {
+        "name": "SMS Purchase"
+    },
+    {
+        "name": "CCTV Purchase"
+    },
+    {
+        "name": "Product Purchase"
+    },
+    {
+        "name": "Others"
+    },
+    {
+        "name": "Service Charge"
+    },
+    {
+        "name": "Nasta"
+    },
+    {
+        "name": "Salary"
+    },
+    {
+        "name": "Ta Bill"
+    },
+    {
+        "name": "Phone Bill"
+    }
+]
