@@ -102,7 +102,7 @@ Route::patch('/edit-attendance', [AttendanceProcessController::class, 'updateAtt
 
 // Process Salary;
 Route::post('/add-process-salary', [ProcessSalaryController::class, 'addProcessSalary']);
-Route::patch('/update-finale-salary', [ProcessSalaryController::class, 'updateIndividualSalary']);
+Route::put('/update-finale-salary', [ProcessSalaryController::class, 'updateIndividualSalary']);
 
 
 

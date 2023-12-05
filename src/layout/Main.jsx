@@ -8,7 +8,7 @@ const Main = () => {
             <Header />
             <ScrollRestoration />
             <Outlet />
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }

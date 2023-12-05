@@ -7,11 +7,26 @@ import api from '../../../../api/api';
 import { ToastContainer, toast } from 'react-toastify';
 
 const EditFinalProcessSalary = () => {
+    const months = [
+        'January', 'February', 'March', 'April',
+        'May', 'June', 'July', 'August',
+        'September', 'October', 'November', 'December'
+    ];
+
+    const currentYear = new Date().getFullYear();
+    const [selectedMonth, setSelectedMonth] = useState(1); // Default to January
+    const [selectedYear, setSelectedYear] = useState(currentYear);
+    const [CurrentMonthDays, setCurrentMonthDays] = useState(30)
+
     const [data, setData] = useState([]);
     const { id } = useParams();
-
-
     const navigate = useNavigate();
+
+
+    useEffect(() => {
+        const lastDay = new Date(selectedYear, selectedMonth, 0).getDate();
+        setCurrentMonthDays(lastDay)
+    }, [selectedMonth, selectedYear])
 
     useEffect(() => {
         secureApi.get(`/show-individualdata-idwise?id=${id}`)
@@ -32,13 +47,15 @@ const EditFinalProcessSalary = () => {
         const ta = parseFloat(form.ta.value) | 0;
         const bonus = parseFloat(form.bonus.value) | 0;
 
-        // const main_advance = data.advance;
-        // const main_ta = data.ta;
-        // const main_bonus = data.bonus;
+        const basic_salary = parseFloat(data.basic_salary)
+        const main_advance = parseFloat(data.advance);
+        const main_ta = parseFloat(data.ta);
+        const main_bonus = parseFloat(data.bonus);
+        const main_attendance = parseFloat(data.total_attendance);
 
         // const advance_diff = advance - main_advance;
-        const currentDate = new Date();
-        const CurrentMonthDays = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+        // const currentDate = new Date();
+        // const CurrentMonthDays = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
 
         const salaryInfo = {
             final_salary: final_salary
@@ -46,42 +63,42 @@ const EditFinalProcessSalary = () => {
 
         if (advance > 0) {
             salaryInfo.advance = advance;
-            salaryInfo.final_salary = ((data.basic_salary / CurrentMonthDays) * (data.total_attendance + 1)) - advance + data.ta + data.bonus; // Subtract advance from final_salary
+            salaryInfo.final_salary = ((basic_salary / CurrentMonthDays) * (main_attendance + 1)) - advance + main_ta + main_bonus; // Subtract advance from final_salary
         }
 
         if (ta > 0) {
             salaryInfo.ta = ta;
-            salaryInfo.final_salary += ((data.basic_salary / CurrentMonthDays) * (data.total_attendance + 1)) - data.advance + ta + data.bonus; // Add ta to final_salary
+            salaryInfo.final_salary += ((basic_salary / CurrentMonthDays) * (main_attendance + 1)) - main_advance + ta + main_bonus; // Add ta to final_salary
         }
 
         if (bonus > 0) {
             salaryInfo.bonus = bonus;
-            salaryInfo.final_salary += ((data.basic_salary / CurrentMonthDays) * (data.total_attendance + 1)) - data.advance + data.ta + bonus; // Add bonus to final_salary
+            salaryInfo.final_salary += ((basic_salary / CurrentMonthDays) * (main_attendance + 1)) - main_advance + main_ta + bonus; // Add bonus to final_salary
         }
 
         if (advance > 0 && ta > 0) {
             salaryInfo.advance = advance;
             salaryInfo.ta = ta;
-            salaryInfo.final_salary = ((data.basic_salary / CurrentMonthDays) * (data.total_attendance + 1)) - advance + ta + data.bonus
+            salaryInfo.final_salary = ((basic_salary / CurrentMonthDays) * (main_attendance + 1)) - advance + ta + main_bonus
         }
 
         if (advance > 0 && bonus > 0) {
             salaryInfo.advance = advance;
             salaryInfo.bonus = bonus;
-            salaryInfo.final_salary = ((data.basic_salary / CurrentMonthDays) * (data.total_attendance + 1)) - advance + data.ta + bonus
+            salaryInfo.final_salary = ((basic_salary / CurrentMonthDays) * (main_attendance + 1)) - advance + main_ta + bonus
         }
 
         if (ta > 0 && bonus > 0) {
             salaryInfo.ta = ta;
             salaryInfo.ta = bonus;
-            salaryInfo.final_salary = ((data.basic_salary / CurrentMonthDays) * (data.total_attendance + 1)) + ta + bonus;
+            salaryInfo.final_salary = ((basic_salary / CurrentMonthDays) * (main_attendance + 1)) + ta + bonus;
         }
 
         if (advance > 0 && ta > 0 && bonus > 0) {
             salaryInfo.advance = advance;
             salaryInfo.ta = ta;
             salaryInfo.ta = bonus;
-            salaryInfo.final_salary = ((data.basic_salary / CurrentMonthDays) * (data.total_attendance + 1)) - advance + ta + bonus;
+            salaryInfo.final_salary = ((basic_salary / CurrentMonthDays) * (main_attendance + 1)) - advance + ta + bonus;
         }
 
         // console.log(salaryInfo);
@@ -99,7 +116,7 @@ const EditFinalProcessSalary = () => {
 
                 // Send data to server;
                 // console.log(salaryInfo)
-                api.patch(`/update-finale-salary?id=${id}`, salaryInfo)
+                api.put(`/update-finale-salary?id=${id}`, salaryInfo)
                     .then(res => {
                         if (res.status == 'ok') {
                             navigate('/dashboard/view-salary-process')
@@ -119,6 +136,40 @@ const EditFinalProcessSalary = () => {
     return (
         <div className='min-h-screen'>
             <PageHeading title={`Update Salary`} />
+
+            <form>
+                <div className="flex mt-3 space-x-4 justify-center items-center">
+                    {/* Dropdown for 12 months */}
+                    <select
+                        className="block appearance-none w-32 bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-blue-500"
+                        value={selectedMonth}
+                        onChange={(e) => setSelectedMonth(e.target.value)}
+                    >
+                        {months.map((month, index) => (
+                            <option key={index + 1} value={index + 1}>
+                                {month}
+                            </option>
+                        ))}
+                    </select>
+
+                    {/* Dropdown for current year */}
+                    <select
+                        className="block appearance-none w-32 bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-blue-500"
+                        value={selectedYear}
+                        onChange={(e) => setSelectedYear(e.target.value)}
+                    >
+                        <option value={currentYear}>
+                            {currentYear}
+                        </option>
+
+                    </select>
+                    {/* 
+                    <button type='submit' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Search
+                    </button> */}
+                </div>
+            </form>
+
             <div>
                 <form onSubmit={handleFormSubmission}>
                     <div className='grid grid-cols-1 md:grid-cols-5 gap-3'>
@@ -129,6 +180,7 @@ const EditFinalProcessSalary = () => {
                                 defaultValue={data?.final_salary}
                                 name='final_salary'
                                 class="input input-bordered w-full"
+                                disabled
                             />
                         </div>
                         <div>

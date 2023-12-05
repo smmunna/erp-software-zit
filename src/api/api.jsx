@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-    // baseURL: 'http://localhost:8000/api', // API base URL
+    baseURL: 'http://localhost:8000/api', // API base URL
     // baseURL: 'https://zit-accounting.hostzam.com/api', // API base URL
-    baseURL: 'https://accountingserver.techzaint.com/api', // API base URL
+    // baseURL: 'https://accountingserver.techzaint.com/api', // API base URL
     // baseURL: 'https://testaccountingserver.hostzam.com/api', // API base URL
     // baseURL: 'https://erpserver.hostzam.com/api', // API base URL
 });

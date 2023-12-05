@@ -96,9 +96,9 @@ const Login = () => {
                         </form>
                     </div>
 
-                    <div className="py-5">
+                    {/* <div className="py-5">
                         <h3>Developed by <a href="https://www.linkedin.com/in/minhazulabedinmunna/" className="link-primary underline">Minhazul Abedin Munna</a></h3>
-                    </div>
+                    </div> */}
 
                 </div>
 
